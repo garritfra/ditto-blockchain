@@ -1,4 +1,4 @@
-const net = require("net");
+import * as net from "net";
 const server = net.createServer(c => {
   //'connection' listener
   console.log("client connected");
