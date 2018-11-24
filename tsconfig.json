@@ -2,7 +2,9 @@
   "compilerOptions": {
     "module": "system",
     "sourceMap": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "rootDir": "src",
+    "moduleResolution": "node"
   },
-  "files": ["./src/app.ts"]
+  "include": ["** /*"]
 }

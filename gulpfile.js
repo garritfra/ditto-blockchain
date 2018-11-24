@@ -3,7 +3,7 @@ const ts = require("gulp-typescript");
 
 gulp.task("typescript", function() {
   return gulp
-    .src("./src/*.ts")
+    .src("./src/**/*.ts")
     .pipe(ts())
     .pipe(gulp.dest("dist"));
 });

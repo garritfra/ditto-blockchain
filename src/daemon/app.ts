@@ -1,6 +1,11 @@
 import * as net from "net";
+import Blockchain from "../model/Blockchain";
+
+const blockchain = new Blockchain();
+
 const server = net.createServer(c => {
   //'connection' listener
+
   console.log("client connected");
 
   c.on("end", () => {
