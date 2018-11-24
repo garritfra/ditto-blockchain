@@ -8,14 +8,18 @@ const server = net.createServer(c => {
   });
 
   c.on("data", data => {
-    console.log(data.toString());
+    try {
+      console.log(JSON.parse(data.toString()).message);
+    } catch (e) {
+      console.log("Request was not a JSON Object!");
+    }
   });
 
   c.write("Hi!");
   c.pipe(c);
 });
 
-server.listen(42, () => {
+server.listen(42000, () => {
   //'listening' listener
   console.log("server bound");
 });
