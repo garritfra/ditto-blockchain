@@ -1,10 +1,5 @@
 package main
 
-import (
-	"crypto/sha256"
-	"fmt"
-)
-
 // Blockchain struct
 type Blockchain struct {
 	blocks []Block
@@ -25,11 +20,6 @@ func newBlockchain() Blockchain {
 }
 
 func generateGenesisBlock() Block {
-	block := new(Block)
-	hasher := sha256.New()
-	s := fmt.Sprintf("%v", block)
-	sum := hasher.Sum([]byte(s))
-	block.hash = sum
-
-	return *block
+	block := newBlock([]byte{})
+	return block
 }
