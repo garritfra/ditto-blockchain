@@ -20,6 +20,6 @@ func newBlockchain() Blockchain {
 }
 
 func generateGenesisBlock() Block {
-	block := newBlock([]byte{})
+	block := newBlock([]byte{}, []byte("Genesis"))
 	return block
 }

@@ -12,10 +12,11 @@ type Block struct {
 	Timestamp    time.Time
 	Hash         []byte
 	PreviousHash []byte
+	Data         []byte
 }
 
-func newBlock(previousHash []byte) Block {
-	block := Block{Timestamp: time.Now(), PreviousHash: previousHash}
+func newBlock(previousHash []byte, data []byte) Block {
+	block := Block{Timestamp: time.Now(), PreviousHash: previousHash, Data: data}
 
 	block.calculateHash()
 
