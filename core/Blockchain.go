@@ -9,7 +9,8 @@ func (bc *Blockchain) addBlock(block Block) {
 	bc.blocks = append(bc.blocks, block)
 }
 
-func newBlockchain() Blockchain {
+// NewBlockchain creates a new Blockchain
+func NewBlockchain() Blockchain {
 
 	blockchain := Blockchain{blocks: make([]Block, 0)}
 
@@ -20,6 +21,6 @@ func newBlockchain() Blockchain {
 }
 
 func generateGenesisBlock() Block {
-	block := newBlock([]byte{}, []byte("Genesis"))
+	block := NewBlock([]byte{}, []byte("Genesis"))
 	return block
 }

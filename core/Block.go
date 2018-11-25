@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/gob"
+	"encoding/hex"
 	"time"
 )
 
@@ -12,10 +13,19 @@ type Block struct {
 	Timestamp    time.Time
 	Hash         []byte
 	PreviousHash []byte
-	Data         []byte
+	Data         interface{}
 }
 
-func newBlock(previousHash []byte, data []byte) Block {
+// BlockJSON is a modified Block struct for json representation
+type BlockJSON struct {
+	Timestamp     time.Time
+	Hash          string
+	PreviouseHash string
+	Data          interface{}
+}
+
+// NewBlock creates a new Block
+func NewBlock(previousHash []byte, data interface{}) Block {
 	block := Block{Timestamp: time.Now(), PreviousHash: previousHash, Data: data}
 
 	block.calculateHash()
@@ -36,4 +46,9 @@ func (block *Block) calculateHash() {
 	sum := hasher.Sum(nil)
 
 	block.Hash = sum
+}
+
+// EncodeJSON encodes a Block to a JSON representable struct
+func (block *Block) EncodeJSON() BlockJSON {
+	return BlockJSON{Timestamp: block.Timestamp, PreviouseHash: hex.EncodeToString(block.PreviousHash), Hash: hex.EncodeToString(block.Hash), Data: block.Data}
 }
