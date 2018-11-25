@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	fmt.Printf("hello, world\n")
+	blockchain := newBlockchain()
+
+	for _, v := range blockchain.blocks {
+		fmt.Println(v.hash)
+	}
+
 }
