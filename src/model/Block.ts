@@ -1,19 +1,20 @@
 import { SHA256 } from "crypto-js";
 import Transaction from "./Transaction";
+import { Hash } from "crypto";
 
 export default class Block {
-  id: any;
+  id: number;
   timestamp: Date;
-  data: any[];
-  previousHash: any;
-  hash: any;
+  data: Transaction[];
+  previousHash: string;
+  hash: string;
   /**
    * Construct a Block object
    * @constructor
    * @param {number} id
    * @param {string} previousHash
    */
-  constructor(id, previousHash) {
+  constructor(id: number, previousHash: string) {
     this.id = id;
     this.timestamp = new Date();
     this.data = [];
@@ -52,7 +53,7 @@ export default class Block {
    * Pushes a transaction to the Block
    * @param {Transaction} transaction
    */
-  addTransaction(transaction) {
+  addTransaction(transaction: Transaction) {
     this.data.push(transaction);
   }
 }

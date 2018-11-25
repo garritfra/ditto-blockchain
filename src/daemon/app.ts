@@ -14,7 +14,7 @@ const server = net.createServer(c => {
 
   c.on("data", data => {
     try {
-      console.log(JSON.parse(data.toString()).message);
+      console.log(JSON.parse(data.toString()));
     } catch (e) {
       console.log("Request was not a JSON Object!");
     }

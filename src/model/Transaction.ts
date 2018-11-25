@@ -1,9 +1,9 @@
 export default class Transaction {
-  sender: any;
-  receiver: any;
-  amount: any;
+  sender: string;
+  receiver: string;
+  amount: number;
 
-  constructor(sender, receiver, amount) {
+  constructor(sender: string, receiver: string, amount: number) {
     this.sender = sender;
     this.receiver = receiver;
     this.amount = amount;

@@ -10,7 +10,7 @@ export default class Blockchain {
     this.addBlock(this.genesisBlock);
   }
 
-  addBlock(block) {
+  addBlock(block: Block) {
     this.blocks.push(block);
   }
 
