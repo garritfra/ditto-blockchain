@@ -16,6 +16,8 @@ type Transaction struct {
 func main() {
 	blockchain := newBlockchain()
 
+	StartServer()
+
 	data, _ := json.Marshal(Transaction{Sender: "foo", Receiver: "bar", Amount: 100})
 	block := newBlock(blockchain.blocks[0].Hash, data)
 	blockchain.addBlock(block)
