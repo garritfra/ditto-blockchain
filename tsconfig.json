@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "module": "system",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "rootDir": "src",
-    "moduleResolution": "node"
-  }
-}
