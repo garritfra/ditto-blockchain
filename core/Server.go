@@ -17,7 +17,7 @@ func StartServer() {
 
 	blockchain = NewBlockchain()
 	transaction := Transaction{Sender: "foo", Receiver: "bar", Amount: 100}
-	block := NewBlock(blockchain.blocks[0].Hash, transaction)
+	block := NewBlock(blockchain.blocks[0].Hash, []Transaction{transaction})
 	blockchain.addBlock(block)
 
 	http.HandleFunc("/blockchain", listBlocks)
@@ -28,12 +28,5 @@ func StartServer() {
 }
 
 func listBlocks(w http.ResponseWriter, r *http.Request) {
-
-	var jsonBlocks []BlockJSON
-
-	for _, block := range blockchain.blocks {
-		jsonBlocks = append(jsonBlocks, block.EncodeJSON())
-	}
-
-	json.NewEncoder(w).Encode(jsonBlocks)
+	json.NewEncoder(w).Encode(blockchain.blocks)
 }

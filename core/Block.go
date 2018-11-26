@@ -11,21 +11,13 @@ import (
 // Block Struct
 type Block struct {
 	Timestamp    time.Time
-	Hash         []byte
-	PreviousHash []byte
-	Data         interface{}
-}
-
-// BlockJSON is a modified Block struct for json representation
-type BlockJSON struct {
-	Timestamp     time.Time
-	Hash          string
-	PreviouseHash string
-	Data          interface{}
+	Hash         string
+	PreviousHash string
+	Data         []Transaction
 }
 
 // NewBlock creates a new Block
-func NewBlock(previousHash []byte, data interface{}) Block {
+func NewBlock(previousHash string, data []Transaction) Block {
 	block := Block{Timestamp: time.Now(), PreviousHash: previousHash, Data: data}
 
 	block.calculateHash()
@@ -43,12 +35,7 @@ func (block *Block) calculateHash() {
 	bytes := buffer.Bytes()
 	hasher.Write(bytes)
 
-	sum := hasher.Sum(nil)
+	sum := hex.EncodeToString(hasher.Sum(nil))
 
-	block.Hash = sum
-}
-
-// EncodeJSON encodes a Block to a JSON representable struct
-func (block *Block) EncodeJSON() BlockJSON {
-	return BlockJSON{Timestamp: block.Timestamp, PreviouseHash: hex.EncodeToString(block.PreviousHash), Hash: hex.EncodeToString(block.Hash), Data: block.Data}
+	block.Hash = string(sum)
 }

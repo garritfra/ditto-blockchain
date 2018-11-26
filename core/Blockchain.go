@@ -21,6 +21,8 @@ func NewBlockchain() Blockchain {
 }
 
 func generateGenesisBlock() Block {
-	block := NewBlock([]byte{}, []byte("Genesis"))
+
+	transaction := Transaction{Amount: 0, Sender: "0", Receiver: "0", Message: "Genesis"}
+	block := NewBlock("0", []Transaction{transaction})
 	return block
 }
