@@ -16,7 +16,7 @@ func StartServer() {
 	gob.Register(Blockchain{})
 
 	blockchain = NewBlockchain()
-	block := NewBlock()
+	block := Block{}
 
 	transaction := Transaction{Sender: "foo", Receiver: "bar", Amount: 100}
 	block.AddTransaction(transaction)

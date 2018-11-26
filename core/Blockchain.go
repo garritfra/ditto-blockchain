@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"strings"
+	"time"
 )
 
 // Blockchain struct
@@ -13,10 +15,22 @@ type Blockchain struct {
 func (bc *Blockchain) AddBlock(block Block) {
 
 	block.PreviousHash = bc.GetLastHash()
+	log.Print("Mining Block...")
 
-	block.Hash = calculateHash(block)
-	bc.blocks = append(bc.blocks, block)
-	log.Print("Block added: %o", block)
+	// Mine Block
+	for {
+		hash := calculateHash(block)
+		if strings.HasPrefix(hash, "00000") {
+			block.Hash = hash
+			block.Timestamp = time.Now()
+
+			bc.blocks = append(bc.blocks, block)
+			log.Print("Block Added: ", block.Hash)
+			break
+		}
+		block.Nonce++
+	}
+
 }
 
 // NewBlockchain creates a new Blockchain
@@ -32,7 +46,7 @@ func NewBlockchain() Blockchain {
 
 func generateGenesisBlock() Block {
 
-	block := Block{PreviousHash: "0"}
+	block := Block{PreviousHash: "0", Timestamp: time.Now()}
 	transaction := Transaction{Amount: 0, Sender: "0", Receiver: "0", Message: "Genesis"}
 	block.AddTransaction(transaction)
 	log.Print("Genesis Block created")

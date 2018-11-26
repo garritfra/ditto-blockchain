@@ -10,12 +10,7 @@ type Block struct {
 	Hash         string
 	PreviousHash string
 	Data         []Transaction
-}
-
-// NewBlock creates a new Block
-func NewBlock() Block {
-	block := Block{}
-	return block
+	Nonce        int
 }
 
 // AddTransaction takes in a transaction and adds it to the block
