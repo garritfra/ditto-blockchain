@@ -1,10 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"crypto/sha256"
-	"encoding/gob"
-	"encoding/hex"
 	"time"
 )
 
@@ -17,11 +13,8 @@ type Block struct {
 }
 
 // NewBlock creates a new Block
-func NewBlock(previousHash string) Block {
-	block := Block{Timestamp: time.Now(), PreviousHash: previousHash}
-
-	block.calculateHash()
-
+func NewBlock() Block {
+	block := Block{}
 	return block
 }
 
@@ -29,19 +22,4 @@ func NewBlock(previousHash string) Block {
 func (block *Block) AddTransaction(transaction Transaction) error {
 	block.Data = append(block.Data, transaction)
 	return nil
-}
-
-func (block *Block) calculateHash() {
-	var buffer bytes.Buffer
-	encoder := gob.NewEncoder(&buffer)
-	if err := encoder.Encode(block); err != nil {
-		panic(err)
-	}
-	hasher := sha256.New()
-	bytes := buffer.Bytes()
-	hasher.Write(bytes)
-
-	sum := hex.EncodeToString(hasher.Sum(nil))
-
-	block.Hash = string(sum)
 }
