@@ -14,16 +14,15 @@ type Blockchain struct {
 // AddBlock adds a block to the chain
 func (bc *Blockchain) AddBlock(block Block) {
 
-	block.PreviousHash = bc.GetLastHash()
 	log.Print("Mining Block...")
 
 	// Mine Block
 	for {
 		hash := calculateHash(block)
-		if strings.HasPrefix(hash, "00000") {
+		if strings.HasPrefix(hash, "0000") {
 			block.Hash = hash
 			block.Timestamp = time.Now()
-
+			block.PreviousHash = bc.GetLastHash()
 			bc.blocks = append(bc.blocks, block)
 			log.Print("Block Added: ", block.Hash)
 			break

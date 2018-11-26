@@ -21,7 +21,14 @@ func StartServer() {
 	transaction := Transaction{Sender: "foo", Receiver: "bar", Amount: 100}
 	block.AddTransaction(transaction)
 
-	blockchain.AddBlock(block)
+	go blockchain.AddBlock(block)
+
+	block = Block{}
+
+	transaction = Transaction{Sender: "bar", Receiver: "baz", Amount: 500}
+	block.AddTransaction(transaction)
+
+	go blockchain.AddBlock(block)
 
 	http.HandleFunc("/", redirect)
 	http.HandleFunc("/blockchain", listBlocks)
