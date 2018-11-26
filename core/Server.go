@@ -23,11 +23,16 @@ func StartServer() {
 
 	blockchain.AddBlock(block)
 
+	http.HandleFunc("/", redirect)
 	http.HandleFunc("/blockchain", listBlocks)
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		panic(err)
 	}
+}
+
+func redirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/blockchain", 301)
 }
 
 func listBlocks(w http.ResponseWriter, r *http.Request) {
