@@ -5,7 +5,8 @@ type Blockchain struct {
 	blocks []Block
 }
 
-func (bc *Blockchain) addBlock(block Block) {
+// AddBlock adds a block to the chain
+func (bc *Blockchain) AddBlock(block Block) {
 	bc.blocks = append(bc.blocks, block)
 }
 
@@ -15,14 +16,20 @@ func NewBlockchain() Blockchain {
 	blockchain := Blockchain{blocks: make([]Block, 0)}
 
 	genesisBlock := generateGenesisBlock()
-	blockchain.addBlock(genesisBlock)
+	blockchain.AddBlock(genesisBlock)
 
 	return blockchain
 }
 
 func generateGenesisBlock() Block {
 
+	block := NewBlock("0")
 	transaction := Transaction{Amount: 0, Sender: "0", Receiver: "0", Message: "Genesis"}
-	block := NewBlock("0", []Transaction{transaction})
+	block.AddTransaction(transaction)
 	return block
+}
+
+// GetLastBlock returns the latest block on the chain
+func (bc *Blockchain) GetLastBlock() Block {
+	return bc.blocks[len(bc.blocks)-1]
 }

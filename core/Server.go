@@ -16,9 +16,12 @@ func StartServer() {
 	gob.Register(Blockchain{})
 
 	blockchain = NewBlockchain()
+	block := NewBlock(blockchain.GetLastBlock().Hash)
+
 	transaction := Transaction{Sender: "foo", Receiver: "bar", Amount: 100}
-	block := NewBlock(blockchain.blocks[0].Hash, []Transaction{transaction})
-	blockchain.addBlock(block)
+	block.AddTransaction(transaction)
+
+	blockchain.AddBlock(block)
 
 	http.HandleFunc("/blockchain", listBlocks)
 

@@ -17,12 +17,18 @@ type Block struct {
 }
 
 // NewBlock creates a new Block
-func NewBlock(previousHash string, data []Transaction) Block {
-	block := Block{Timestamp: time.Now(), PreviousHash: previousHash, Data: data}
+func NewBlock(previousHash string) Block {
+	block := Block{Timestamp: time.Now(), PreviousHash: previousHash}
 
 	block.calculateHash()
 
 	return block
+}
+
+// AddTransaction takes in a transaction and adds it to the block
+func (block *Block) AddTransaction(transaction Transaction) error {
+	block.Data = append(block.Data, transaction)
+	return nil
 }
 
 func (block *Block) calculateHash() {
