@@ -19,9 +19,7 @@ func ServeHTTP(port string) {
 
 	blockchain = core.NewBlockchain()
 
-	http.HandleFunc("/", handleMain)
-	http.HandleFunc("/mine_block", handleMineBlock)
-	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
+	registerRouteHandlers()
 
 	log.Print("Listening on port ", port)
 	if err := http.ListenAndServe(port, nil); err != nil {
@@ -29,13 +27,11 @@ func ServeHTTP(port string) {
 	}
 }
 
-func handleMain(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		handleListBlocks(w, r)
-	case "POST":
-		handleAddTransaction(w, r)
-	}
+func registerRouteHandlers() {
+	http.HandleFunc("/", handleListBlocks)
+	http.HandleFunc("/mine_block", handleMineBlock)
+	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
+	http.HandleFunc("/add_transaction", handleAddTransaction)
 }
 
 func handleError(err error, w http.ResponseWriter, r *http.Request) {
