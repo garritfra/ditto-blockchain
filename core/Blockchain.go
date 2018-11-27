@@ -10,24 +10,28 @@ import (
 
 // Blockchain struct
 type Blockchain struct {
-	Blocks []Block
+	Blocks              []Block
+	PendingTransactions []Transaction
 }
 
-// AddBlock adds a block to the chain
-func (bc *Blockchain) AddBlock(block Block) {
-
-	log.Print("Mining Block...")
-
+// MineBlock adds a block to the chain
+func (bc *Blockchain) MineBlock() Block {
+	block := Block{}
+	block.Data = bc.PendingTransactions
+	block.Timestamp = time.Now()
+	block.PreviousHash = bc.GetLastHash()
 	// Mine Block
+	log.Print("Mining Block...")
 	for {
 		hash := crypto.CalculateHash(block)
-		if strings.HasPrefix(hash, "0000") {
+		if strings.HasPrefix(hash, "00000") {
 			block.Hash = hash
-			block.Timestamp = time.Now()
-			block.PreviousHash = bc.GetLastHash()
+
 			bc.Blocks = append(bc.Blocks, block)
+			bc.PendingTransactions = []Transaction{}
+
 			log.Print("Block Added: ", block.Hash)
-			break
+			return block
 		}
 		block.Nonce++
 	}
@@ -38,20 +42,17 @@ func (bc *Blockchain) AddBlock(block Block) {
 func NewBlockchain() Blockchain {
 	log.Print("Creating Blockchain...")
 
-	blockchain := Blockchain{Blocks: make([]Block, 0)}
+	blockchain := Blockchain{Blocks: make([]Block, 0), PendingTransactions: make([]Transaction, 0)}
 
-	genesisBlock := generateGenesisBlock()
-	blockchain.AddBlock(genesisBlock)
+	// Mine Genesis Block
+	blockchain.MineBlock()
 	return blockchain
 }
 
-func generateGenesisBlock() Block {
-
-	block := Block{PreviousHash: "0", Timestamp: time.Now()}
-	transaction := Transaction{Amount: 0, Sender: "0", Receiver: "0", Message: "Genesis"}
-	block.AddTransaction(transaction)
-	log.Print("Genesis Block created")
-	return block
+// AddTransaction takes in a transaction and adds it to the block
+func (bc *Blockchain) AddTransaction(transaction Transaction) error {
+	bc.PendingTransactions = append(bc.PendingTransactions, transaction)
+	return nil
 }
 
 // GetLastHash returns the hash of the latest block on the chain

@@ -12,9 +12,3 @@ type Block struct {
 	Data         []Transaction
 	Nonce        int
 }
-
-// AddTransaction takes in a transaction and adds it to the block
-func (block *Block) AddTransaction(transaction Transaction) error {
-	block.Data = append(block.Data, transaction)
-	return nil
-}

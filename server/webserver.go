@@ -20,6 +20,8 @@ func ServeHTTP(port string) {
 	blockchain = core.NewBlockchain()
 
 	http.HandleFunc("/", handleMain)
+	http.HandleFunc("/mine_block", handleMineBlock)
+	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
 
 	log.Print("Listening on port ", port)
 	if err := http.ListenAndServe(port, nil); err != nil {
@@ -32,7 +34,7 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		handleListBlocks(w, r)
 	case "POST":
-		handleAddBlock(w, r)
+		handleAddTransaction(w, r)
 	}
 }
 
@@ -45,14 +47,24 @@ func handleListBlocks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(blockchain.Blocks)
 }
 
-func handleAddBlock(w http.ResponseWriter, r *http.Request) {
+func handleAddTransaction(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-	var receivedBlock core.Block
-	err := decoder.Decode(&receivedBlock)
+	var receivedTransaction core.Transaction
+	err := decoder.Decode(&receivedTransaction)
 	if err == nil {
-		log.Println(receivedBlock.Data, " received")
-		go blockchain.AddBlock(receivedBlock)
+		log.Println("Transaction from", receivedTransaction.Sender, "to", receivedTransaction.Receiver, "received")
+
+		go blockchain.AddTransaction(receivedTransaction)
 	} else {
 		handleError(err, w, r)
 	}
+}
+
+func handleMineBlock(w http.ResponseWriter, r *http.Request) {
+	block := blockchain.MineBlock()
+	json.NewEncoder(w).Encode(block)
+}
+
+func handleListPendingTransactions(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(blockchain.PendingTransactions)
 }

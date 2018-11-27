@@ -23,7 +23,7 @@ func TestNewBlockchain(t *testing.T) {
 func TestBlockchain_GetLastHash(t *testing.T) {
 	blockchain := NewBlockchain()
 
-	blockchain.AddBlock(Block{})
+	blockchain.MineBlock(Block{})
 	want := blockchain.Blocks[1].Hash
 	got := blockchain.GetLastHash()
 	if got != want {
