@@ -1,7 +1,9 @@
 package main
 
-import "github.com/garritfra/blockchain-project/server"
+import (
+	"github.com/garritfra/blockchain-project/server"
+)
 
 func main() {
-	server.Start()
+	server.ServeHTTP(":42000")
 }
