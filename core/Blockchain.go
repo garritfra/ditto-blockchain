@@ -1,14 +1,16 @@
-package main
+package core
 
 import (
 	"log"
 	"strings"
 	"time"
+
+	"github.com/garritfra/blockchain-project/crypto"
 )
 
 // Blockchain struct
 type Blockchain struct {
-	blocks []Block
+	Blocks []Block
 }
 
 // AddBlock adds a block to the chain
@@ -18,12 +20,12 @@ func (bc *Blockchain) AddBlock(block Block) {
 
 	// Mine Block
 	for {
-		hash := calculateHash(block)
+		hash := crypto.CalculateHash(block)
 		if strings.HasPrefix(hash, "0000") {
 			block.Hash = hash
 			block.Timestamp = time.Now()
 			block.PreviousHash = bc.GetLastHash()
-			bc.blocks = append(bc.blocks, block)
+			bc.Blocks = append(bc.Blocks, block)
 			log.Print("Block Added: ", block.Hash)
 			break
 		}
@@ -36,7 +38,7 @@ func (bc *Blockchain) AddBlock(block Block) {
 func NewBlockchain() Blockchain {
 	log.Print("Creating Blockchain...")
 
-	blockchain := Blockchain{blocks: make([]Block, 0)}
+	blockchain := Blockchain{Blocks: make([]Block, 0)}
 
 	genesisBlock := generateGenesisBlock()
 	blockchain.AddBlock(genesisBlock)
@@ -55,10 +57,10 @@ func generateGenesisBlock() Block {
 // GetLastHash returns the hash of the latest block on the chain
 func (bc *Blockchain) GetLastHash() string {
 
-	bcLength := len(bc.blocks)
+	bcLength := len(bc.Blocks)
 
 	if bcLength == 0 {
 		return "0"
 	}
-	return bc.blocks[len(bc.blocks)-1].Hash
+	return bc.Blocks[len(bc.Blocks)-1].Hash
 }

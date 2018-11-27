@@ -1,4 +1,4 @@
-package main
+package crypto
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 )
 
-func calculateHash(obj interface{}) string {
+func CalculateHash(obj interface{}) string {
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 	if err := encoder.Encode(obj); err != nil {
