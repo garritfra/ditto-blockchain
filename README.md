@@ -6,11 +6,7 @@ Ditto is a distributed Ledger inspired by the Ethereum Project. I must say the n
 
 To run a Ditto Node, Docker must be installed on the Machine. Get Docker [here!](https://docs.docker.com/install/)
 
-After installing Docker, open a command prompt and run the following command
-
-```bash
-docker pull garritfra/ditto:latest
-```
+After installing Docker, open a command prompt and run the following command to download and run the latest container image of the project
 
 ```bash
 docker run garritfra/ditto:latest
