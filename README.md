@@ -2,6 +2,10 @@
 
 Ditto is a distributed Ledger inspired by the Ethereum Project. I must say the name is a bit misleading, as Ditto is, unlike IOTA, not a _tangle_, but rather a chain of nodes.
 
+## Seriously, another Blockchain?
+
+**YES**, Blockchain is awesome, and we cannot have enough of them. I have started this project with the intention to learn the more advanced concepts of Blockchain development as well as to share my approach of a simple blockchain, to give newcomers to this field an overview of the internals of a blockchain, without needing to dig through a huge codebase full of bloat and complex abstractions. In the following chapter I will guide you through the installation of the blockchain server, so you can follow along with the code. If you otherwise know what to do with the source code, go ahead and compile your own server!
+
 ## Installation
 
 To run a Ditto Node, Docker must be installed on the Machine. Get Docker [here!](https://docs.docker.com/install/)
