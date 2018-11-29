@@ -9,7 +9,7 @@ To run a Ditto Node, Docker must be installed on the Machine. Get Docker [here!]
 After installing Docker, open a command prompt and run the following command to download and run the latest container image of the project
 
 ```bash
-docker run garritfra/ditto:latest
+docker run -p 42000:42000 garritfra/ditto:latest
 ```
 
 Open your Browser and navigate to `http://localhost:42000`.
