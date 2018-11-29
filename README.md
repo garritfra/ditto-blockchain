@@ -27,3 +27,13 @@ Voila, your personal Blockchain! Your JSON Response might look something like th
   }
 ]
 ```
+
+## Interacting with your blockchain
+
+The REST API currently exposes these Endpoints:
+
+| Method | Route       | Description                                |
+| :----- | :---------- | :----------------------------------------- |
+| GET    | /           | Get full blockchain                        |
+| POST   | /           | Add pending transaction                    |
+| GET    | /mine_block | Mine a block with all pending transactions |
