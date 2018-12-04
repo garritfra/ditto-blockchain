@@ -1,12 +1,12 @@
-use core::block::Block;
+use core::block;
 
 pub struct Blockchain {
-  blocks: Vec<Block>,
+  pub blocks: Vec<block::Block>,
 }
 pub fn new() -> Blockchain {
   println!("New blockchain\n");
 
-  let genesis = Block { data: 32 };
+  let genesis = block::create_genesis();
 
   let blockchain = Blockchain {
     blocks: vec![genesis],
@@ -15,11 +15,7 @@ pub fn new() -> Blockchain {
 }
 
 impl Blockchain {
-  pub fn add_block(&mut self, block: Block) {
+  pub fn add_block(&mut self, block: block::Block) {
     self.blocks.push(block);
-  }
-
-  pub fn get_blocks(&mut self) -> &Vec<Block> {
-    &self.blocks
   }
 }
