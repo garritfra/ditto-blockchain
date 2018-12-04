@@ -29,11 +29,11 @@ impl Blockchain {
   }
 
   fn clear_transactions(&mut self) {
-    &self.tx_pool.transactions.clear();
+    self.tx_pool.sanatize()
   }
 
   pub fn add_pending_transaction(&mut self, transaction: Transaction) {
-    self.tx_pool.transactions.push(transaction);
+    self.tx_pool.add(transaction)
   }
 
   pub fn get_blocks(&mut self) -> &Vec<block::Block> {

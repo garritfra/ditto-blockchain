@@ -10,12 +10,6 @@ pub fn new() -> Block {
   }
 }
 
-impl Block {
-  pub fn add_transaction(&mut self, transaction: Transaction) {
-    self.transactions.push(transaction);
-  }
-}
-
 pub fn create_genesis() -> Block {
   Block {
     transactions: Vec::new(),
