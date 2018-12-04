@@ -1,3 +1,5 @@
 blockchain-project
 .vscode/
 core/core
+/target
+**/*.rs.bk
