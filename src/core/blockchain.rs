@@ -1,6 +1,4 @@
-pub struct Block {
-  pub data: i32,
-}
+use core::block::Block;
 
 pub struct Blockchain {
   blocks: Vec<Block>,
