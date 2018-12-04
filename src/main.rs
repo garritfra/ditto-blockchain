@@ -10,8 +10,12 @@ fn main() {
     blockchain.mine_block();
 
     for block in blockchain.get_blocks() {
+        println!("Block:");
         for transaction in &block.transactions {
-            println!("{}", transaction.from);
+            println!(
+                "Transaction from {} to {} with amount {}",
+                transaction.from, transaction.to, transaction.amount
+            );
         }
     }
 }
