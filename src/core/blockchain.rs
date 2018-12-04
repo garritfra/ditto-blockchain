@@ -17,11 +17,11 @@ pub fn new() -> Blockchain {
 }
 
 impl Blockchain {
-  pub fn addBlock(&mut self, block: Block) {
+  pub fn add_block(&mut self, block: Block) {
     self.blocks.push(block);
   }
 
-  pub fn getBlocks(&mut self) -> &Vec<Block> {
+  pub fn get_blocks(&mut self) -> &Vec<Block> {
     &self.blocks
   }
 }
