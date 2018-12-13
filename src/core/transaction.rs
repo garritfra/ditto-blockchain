@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Transaction {
   pub from: String,
   pub to: String,
