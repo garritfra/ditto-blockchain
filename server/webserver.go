@@ -32,6 +32,7 @@ func registerRouteHandlers() {
 	http.HandleFunc("/mine_block", handleMineBlock)
 	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
 	http.HandleFunc("/add_transaction", handleAddTransaction)
+	http.HandleFunc("/is_valid", handleIsValid)
 }
 
 func handleError(err error, w http.ResponseWriter, r *http.Request) {
@@ -63,4 +64,9 @@ func handleMineBlock(w http.ResponseWriter, r *http.Request) {
 
 func handleListPendingTransactions(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(blockchain.PendingTransactions)
+}
+
+func handleIsValid(w http.ResponseWriter, r *http.Request) {
+	valid := blockchain.IsValid()
+	json.NewEncoder(w).Encode(valid)
 }

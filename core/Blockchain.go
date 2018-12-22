@@ -21,12 +21,12 @@ func (bc *Blockchain) MineBlock() Block {
 	// Mine Block
 	log.Print("Mining Block...")
 	for {
-		if strings.HasPrefix(block.Hash(), "00000") {
+		if strings.HasPrefix(block.Hash(), "0000") {
 
 			bc.Blocks = append(bc.Blocks, block)
 			bc.PendingTransactions = []Transaction{}
 
-			log.Print("Block Added: ", block.Hash)
+			log.Print("Block Added: ", block.Hash())
 			return block
 		}
 		block.Proof++
@@ -60,6 +60,17 @@ func (bc *Blockchain) GetLastHash() string {
 		return "0"
 	}
 	return bc.Blocks[len(bc.Blocks)-1].Hash()
+}
+
+// IsValid checks, if the chain has any faulty blocks
+func (bc *Blockchain) IsValid() bool {
+	for i := 1; i < len(bc.Blocks); i++ {
+		if bc.Blocks[i-1].Hash() != bc.Blocks[i].PreviousHash {
+			return false
+		}
+	}
+
+	return true
 }
 
 // JSONBlockchain is needed, because the hash of each block is calculated dynamically, and therefore is not stored in the `Block` struct
