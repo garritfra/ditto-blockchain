@@ -43,4 +43,12 @@ The REST API currently exposes these Endpoints:
 | GET    | /mine_block | Mine a block with all pending transactions |
 | GET    | /is_valid   | Check, if the chain has any faulty blocks  |
 
-Refer to the [wiki](https://github.com/garritfra/blockchain-project/wiki) to get more information about the REST API
+
+## Decentralizing your Blockchain (Currently under development)
+
+Use the following endpoints to connect multiple nodes together
+
+| Method | Route     | Description                                       |
+| :----- | :-------- | :------------------------------------------------ |
+| POST   | /add_peer | Add a new peer address to the network             |
+| GET    | /update   | Compare chain with peers, and update if nessesary |
