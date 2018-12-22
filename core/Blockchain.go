@@ -10,6 +10,7 @@ import (
 type Blockchain struct {
 	Blocks              []Block
 	PendingTransactions []Transaction
+	Peers               []string
 }
 
 // MineBlock adds a block to the chain
@@ -38,7 +39,7 @@ func (bc *Blockchain) MineBlock() Block {
 func NewBlockchain() Blockchain {
 	log.Print("Creating Blockchain...")
 
-	blockchain := Blockchain{Blocks: make([]Block, 0), PendingTransactions: make([]Transaction, 0)}
+	blockchain := Blockchain{Blocks: make([]Block, 0), PendingTransactions: make([]Transaction, 0), Peers: make([]string, 0)}
 
 	// Mine Genesis Block
 	blockchain.MineBlock()
@@ -62,6 +63,11 @@ func (bc *Blockchain) GetLastHash() string {
 	return bc.Blocks[len(bc.Blocks)-1].Hash()
 }
 
+// AddPeer appends the IP address to the list of peers known to the chain
+func (bc *Blockchain) AddPeer(peer string) {
+	bc.Peers = append(bc.Peers, peer)
+}
+
 // IsValid checks, if the chain has any faulty blocks
 func (bc *Blockchain) IsValid() bool {
 	for i := 1; i < len(bc.Blocks); i++ {
@@ -78,11 +84,12 @@ type JSONBlockchain struct {
 	Blocks              []JSONBlock
 	Blockcount          int
 	PendingTransactions []Transaction
+	Peers               []string
 }
 
 // AsJSON returns the Blockchain as a JSON Blockchain
 func (bc *Blockchain) AsJSON() JSONBlockchain {
-	jsonChain := JSONBlockchain{PendingTransactions: bc.PendingTransactions}
+	jsonChain := JSONBlockchain{PendingTransactions: bc.PendingTransactions, Peers: bc.Peers}
 
 	for _, block := range bc.Blocks {
 		jsonChain.Blocks = append(jsonChain.Blocks, block.AsJSON())

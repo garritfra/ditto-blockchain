@@ -33,6 +33,8 @@ func registerRouteHandlers() {
 	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
 	http.HandleFunc("/add_transaction", handleAddTransaction)
 	http.HandleFunc("/is_valid", handleIsValid)
+
+	http.HandleFunc("/add_peers", handleAddPeers)
 }
 
 func handleError(err error, w http.ResponseWriter, r *http.Request) {
@@ -69,4 +71,22 @@ func handleListPendingTransactions(w http.ResponseWriter, r *http.Request) {
 func handleIsValid(w http.ResponseWriter, r *http.Request) {
 	valid := blockchain.IsValid()
 	json.NewEncoder(w).Encode(valid)
+}
+
+// Takes an a string-slice, and adds it to the known peers
+func handleAddPeers(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var receivedPeers []string
+	err := decoder.Decode(&receivedPeers)
+
+	if err == nil {
+		for _, peer := range receivedPeers {
+			blockchain.AddPeer(peer)
+		}
+	} else {
+		handleError(err, w, r)
+	}
+
+	json.NewEncoder(w).Encode(blockchain.Peers)
+
 }

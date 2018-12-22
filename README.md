@@ -48,7 +48,7 @@ The REST API currently exposes these Endpoints:
 
 Use the following endpoints to connect multiple nodes together
 
-| Method | Route     | Description                                       |
-| :----- | :-------- | :------------------------------------------------ |
-| POST   | /add_peer | Add a new peer address to the network             |
-| GET    | /update   | Compare chain with peers, and update if nessesary |
+| Method | Route      | Description                                       |
+| :----- | :--------- | :------------------------------------------------ |
+| POST   | /add_peers | Add new peer addresses to the network             |
+| GET    | /update    | Compare chain with peers, and update if nessesary |
