@@ -1,0 +1,20 @@
+syntax = "proto3";
+package messages;
+
+import "timestamp.proto";
+
+message Block {
+    Timestamp timestamp = 1;
+    string hash = 2;
+    string previous_hash = 3;
+    repeated Transaction transactions = 4;
+    int32 nonce = 5;
+
+}
+
+message Transaction {
+    string sender = 1;
+    string receiver = 2;
+    int32 amount = 3;
+    string message = 4;
+}

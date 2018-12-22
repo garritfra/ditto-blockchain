@@ -12,7 +12,7 @@ import (
 var blockchain core.Blockchain
 
 // ServeHTTP serves a http server on a given port with format ":PORT"
-func ServeHTTP(port string) {
+func start(port string) {
 	gob.Register(core.Block{})
 	gob.Register(core.Transaction{})
 	gob.Register(core.Blockchain{})
