@@ -76,6 +76,7 @@ func (bc *Blockchain) IsValid() bool {
 // JSONBlockchain is needed, because the hash of each block is calculated dynamically, and therefore is not stored in the `Block` struct
 type JSONBlockchain struct {
 	Blocks              []JSONBlock
+	Blockcount          int
 	PendingTransactions []Transaction
 }
 
@@ -86,6 +87,7 @@ func (bc *Blockchain) AsJSON() JSONBlockchain {
 	for _, block := range bc.Blocks {
 		jsonChain.Blocks = append(jsonChain.Blocks, block.AsJSON())
 	}
+	jsonChain.Blockcount = len(jsonChain.Blocks)
 
 	return jsonChain
 }
