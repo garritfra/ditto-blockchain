@@ -40,7 +40,7 @@ func handleError(err error, w http.ResponseWriter, r *http.Request) {
 }
 
 func handleListBlocks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(blockchain.Blocks)
+	json.NewEncoder(w).Encode(blockchain.AsJSON().Blocks)
 }
 
 func handleAddTransaction(w http.ResponseWriter, r *http.Request) {

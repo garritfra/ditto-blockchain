@@ -4,8 +4,6 @@ import (
 	"log"
 	"strings"
 	"time"
-
-	"github.com/garritfra/blockchain-project/crypto"
 )
 
 // Blockchain struct
@@ -23,9 +21,7 @@ func (bc *Blockchain) MineBlock() Block {
 	// Mine Block
 	log.Print("Mining Block...")
 	for {
-		hash := crypto.CalculateHash(block)
-		if strings.HasPrefix(hash, "00000") {
-			block.Hash = hash
+		if strings.HasPrefix(block.Hash(), "00000") {
 
 			bc.Blocks = append(bc.Blocks, block)
 			bc.PendingTransactions = []Transaction{}
@@ -33,7 +29,7 @@ func (bc *Blockchain) MineBlock() Block {
 			log.Print("Block Added: ", block.Hash)
 			return block
 		}
-		block.Nonce++
+		block.Proof++
 	}
 
 }
@@ -63,5 +59,22 @@ func (bc *Blockchain) GetLastHash() string {
 	if bcLength == 0 {
 		return "0"
 	}
-	return bc.Blocks[len(bc.Blocks)-1].Hash
+	return bc.Blocks[len(bc.Blocks)-1].Hash()
+}
+
+// JSONBlockchain is needed, because the hash of each block is calculated dynamically, and therefore is not stored in the `Block` struct
+type JSONBlockchain struct {
+	Blocks              []JSONBlock
+	PendingTransactions []Transaction
+}
+
+// AsJSON returns the Blockchain as a JSON Blockchain
+func (bc *Blockchain) AsJSON() JSONBlockchain {
+	jsonChain := JSONBlockchain{PendingTransactions: bc.PendingTransactions}
+
+	for _, block := range bc.Blocks {
+		jsonChain.Blocks = append(jsonChain.Blocks, block.AsJSON())
+	}
+
+	return jsonChain
 }
