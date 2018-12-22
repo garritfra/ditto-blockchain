@@ -41,5 +41,6 @@ The REST API currently exposes these Endpoints:
 | GET    | /           | Get full blockchain                        |
 | POST   | /           | Add pending transaction                    |
 | GET    | /mine_block | Mine a block with all pending transactions |
+| GET    | /is_valid   | Check, if the chain has any faulty blocks  |
 
 Refer to the [wiki](https://github.com/garritfra/blockchain-project/wiki) to get more information about the REST API
