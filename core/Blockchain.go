@@ -29,12 +29,12 @@ func (bc *Blockchain) MineBlock() Block {
 			bc.Blocks = append(bc.Blocks, block)
 			bc.PendingTransactions = []Transaction{}
 
+			bc.NotifyPeers()
 			log.Print("Block Added: ", block.Hash())
 			return block
 		}
 		block.Proof++
 	}
-
 }
 
 // NewBlockchain creates a new Blockchain
@@ -91,7 +91,7 @@ func contains(s []string, e string) bool {
 }
 
 // IsValid checks, if the chain has any faulty blocks
-func (bc *Blockchain) IsValid() bool {
+func (bc Blockchain) IsValid() bool {
 	for i := 1; i < len(bc.Blocks); i++ {
 		if bc.Blocks[i-1].Hash() != bc.Blocks[i].PreviousHash {
 			return false
@@ -101,6 +101,14 @@ func (bc *Blockchain) IsValid() bool {
 	return true
 }
 
+// NotifyPeers requests an update to all peers
+func (bc *Blockchain) NotifyPeers() {
+	for _, peer := range bc.Peers {
+		http.Get("http://" + peer + "/update")
+	}
+}
+
+// Update compares the length of the own chain to the blocklength of every known peer, and updates the chain accordingly
 func (bc *Blockchain) Update() bool {
 
 	var hasBeenReplaced = false
@@ -112,21 +120,24 @@ func (bc *Blockchain) Update() bool {
 		var receivedBlockchain JSONBlockchain
 		err = decoder.Decode(&receivedBlockchain)
 		if err == nil {
-			if receivedBlockchain.Blockcount > bc.AsJSON().Blockcount {
-
-				newBlocks := make([]Block, 0)
-				for _, block := range receivedBlockchain.Blocks {
-					newBlocks = append(newBlocks, block.FromJSON())
-				}
-
-				bc.Blocks = newBlocks
-
+			if receivedBlockchain.Blockcount > bc.AsJSON().Blockcount && receivedBlockchain.FromJSON().IsValid() {
+				bc.replaceChain(receivedBlockchain.FromJSON())
 				log.Println("Blockchain has been updated by " + peer)
 				hasBeenReplaced = true
 			}
 		}
 	}
 	return hasBeenReplaced
+}
+
+func (bc *Blockchain) replaceChain(newChain Blockchain) {
+	newBlocks := make([]Block, 0)
+	for _, block := range newChain.Blocks {
+		newBlocks = append(newBlocks, block)
+	}
+
+	bc.Blocks = newBlocks
+	bc.NotifyPeers()
 }
 
 // JSONBlockchain is needed, because the hash of each block is calculated dynamically, and therefore is not stored in the `Block` struct
@@ -147,4 +158,14 @@ func (bc *Blockchain) AsJSON() JSONBlockchain {
 	jsonChain.Blockcount = len(jsonChain.Blocks)
 
 	return jsonChain
+}
+
+// FromJSON casts a `JSONBlockchain` to a regular `Blockchain` struct
+func (bc *JSONBlockchain) FromJSON() Blockchain {
+	chain := Blockchain{PendingTransactions: bc.PendingTransactions, Peers: bc.Peers}
+	for _, block := range bc.Blocks {
+		chain.Blocks = append(chain.Blocks, block.FromJSON())
+	}
+
+	return chain
 }

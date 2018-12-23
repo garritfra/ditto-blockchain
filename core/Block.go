@@ -17,8 +17,8 @@ type Block struct {
 // JSONBlock representation
 type JSONBlock struct {
 	Timestamp    time.Time     `json:"timestamp"`
-	Hash         string        `json:"hash"`
 	PreviousHash string        `json:"previous_hash"`
+	Hash         string        `json:"hash"`
 	Data         []Transaction `json:"data"`
 	Proof        int           `json:"nonce"`
 }
@@ -33,6 +33,7 @@ func (block *Block) AsJSON() JSONBlock {
 	return JSONBlock{Timestamp: block.Timestamp, Hash: block.Hash(), PreviousHash: block.PreviousHash, Data: block.Data, Proof: block.Proof}
 }
 
+// FromJSON casts a `JSONBlock` to a regular `Block` struct
 func (block *JSONBlock) FromJSON() Block {
 	return Block{Timestamp: block.Timestamp, PreviousHash: block.PreviousHash, Data: block.Data, Proof: block.Proof}
 }
