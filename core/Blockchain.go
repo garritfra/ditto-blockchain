@@ -1,6 +1,7 @@
 package core
 
 import (
+	"bytes"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 
 // Blockchain struct
 type Blockchain struct {
+	Hostname            string
 	Blocks              []Block
 	PendingTransactions []Transaction
 	Peers               []string
@@ -38,10 +40,10 @@ func (bc *Blockchain) MineBlock() Block {
 }
 
 // NewBlockchain creates a new Blockchain
-func NewBlockchain() Blockchain {
+func NewBlockchain(hostname string) Blockchain {
 	log.Print("Creating Blockchain...")
 
-	blockchain := Blockchain{Blocks: make([]Block, 0), PendingTransactions: make([]Transaction, 0), Peers: make([]string, 0)}
+	blockchain := Blockchain{Hostname: hostname, Blocks: make([]Block, 0), PendingTransactions: make([]Transaction, 0), Peers: make([]string, 0)}
 
 	// Mine Genesis Block
 	blockchain.MineBlock()
@@ -77,6 +79,12 @@ func (bc *Blockchain) AddPeer(peer string) (resp *http.Response, err error) {
 	// Add Peer, if it is not already in the list
 	if !contains(bc.Peers, peer) {
 		bc.Peers = append(bc.Peers, peer)
+
+		var body []string
+		data, _ := json.Marshal(append(body, bc.Hostname))
+
+		log.Println("request http://" + peer + "/add_peers")
+		http.Post("http://"+peer+"/add_peers", "application/json", bytes.NewBuffer(data))
 	}
 	return resp, nil
 }

@@ -4,7 +4,9 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"log"
+	"net"
 	"net/http"
+	"os"
 
 	"github.com/garritfra/blockchain-project/core"
 )
@@ -17,7 +19,7 @@ func ServeHTTP(port string) {
 	gob.Register(core.Transaction{})
 	gob.Register(core.Blockchain{})
 
-	blockchain = core.NewBlockchain()
+	blockchain = core.NewBlockchain(getHostAddress() + port)
 
 	registerRouteHandlers()
 
@@ -25,6 +27,23 @@ func ServeHTTP(port string) {
 	if err := http.ListenAndServe(port, nil); err != nil {
 		panic(err)
 	}
+}
+
+func getHostAddress() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		os.Stderr.WriteString("Oops: " + err.Error() + "\n")
+		os.Exit(1)
+	}
+
+	for _, a := range addrs {
+		if ipnet, ok := a.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
 }
 
 func registerRouteHandlers() {
