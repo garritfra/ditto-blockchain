@@ -2,6 +2,7 @@ package core
 
 import (
 	"log"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -64,8 +65,28 @@ func (bc *Blockchain) GetLastHash() string {
 }
 
 // AddPeer appends the IP address to the list of peers known to the chain
-func (bc *Blockchain) AddPeer(peer string) {
-	bc.Peers = append(bc.Peers, peer)
+func (bc *Blockchain) AddPeer(peer string) (resp *http.Response, err error) {
+	resp, err = http.Get("http://" + peer)
+
+	// Return Error, if an error occured
+	if err != nil {
+		return nil, err
+	}
+
+	// Add Peer, if it is not already in the list
+	if !contains(bc.Peers, peer) {
+		bc.Peers = append(bc.Peers, peer)
+	}
+	return resp, nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
 
 // IsValid checks, if the chain has any faulty blocks

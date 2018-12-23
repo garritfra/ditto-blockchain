@@ -81,7 +81,10 @@ func handleAddPeers(w http.ResponseWriter, r *http.Request) {
 
 	if err == nil {
 		for _, peer := range receivedPeers {
-			blockchain.AddPeer(peer)
+			_, err := blockchain.AddPeer(peer)
+			if err != nil {
+				handleError(err, w, r)
+			}
 		}
 	} else {
 		handleError(err, w, r)
