@@ -32,3 +32,7 @@ func (block *Block) Hash() string {
 func (block *Block) AsJSON() JSONBlock {
 	return JSONBlock{Timestamp: block.Timestamp, Hash: block.Hash(), PreviousHash: block.PreviousHash, Data: block.Data, Proof: block.Proof}
 }
+
+func (block *JSONBlock) FromJSON() Block {
+	return Block{Timestamp: block.Timestamp, PreviousHash: block.PreviousHash, Data: block.Data, Proof: block.Proof}
+}

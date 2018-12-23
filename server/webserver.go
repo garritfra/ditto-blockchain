@@ -33,6 +33,7 @@ func registerRouteHandlers() {
 	http.HandleFunc("/pending_transactions", handleListPendingTransactions)
 	http.HandleFunc("/add_transaction", handleAddTransaction)
 	http.HandleFunc("/is_valid", handleIsValid)
+	http.HandleFunc("/update", handleUpdate)
 
 	http.HandleFunc("/add_peers", handleAddPeers)
 }
@@ -91,5 +92,8 @@ func handleAddPeers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(blockchain.Peers)
+}
 
+func handleUpdate(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(blockchain.Update())
 }

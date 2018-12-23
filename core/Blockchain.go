@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"strings"
@@ -98,6 +99,34 @@ func (bc *Blockchain) IsValid() bool {
 	}
 
 	return true
+}
+
+func (bc *Blockchain) Update() bool {
+
+	var hasBeenReplaced = false
+
+	for _, peer := range bc.Peers {
+		resp, err := http.Get("http://" + peer)
+
+		decoder := json.NewDecoder(resp.Body)
+		var receivedBlockchain JSONBlockchain
+		err = decoder.Decode(&receivedBlockchain)
+		if err == nil {
+			if receivedBlockchain.Blockcount > bc.AsJSON().Blockcount {
+
+				newBlocks := make([]Block, 0)
+				for _, block := range receivedBlockchain.Blocks {
+					newBlocks = append(newBlocks, block.FromJSON())
+				}
+
+				bc.Blocks = newBlocks
+
+				log.Println("Blockchain has been updated by " + peer)
+				hasBeenReplaced = true
+			}
+		}
+	}
+	return hasBeenReplaced
 }
 
 // JSONBlockchain is needed, because the hash of each block is calculated dynamically, and therefore is not stored in the `Block` struct
