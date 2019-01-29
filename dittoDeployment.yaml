@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ditto-deployment
+  labels:
+    app: ditto
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ditto
+  template:
+    metadata:
+      labels:
+        app: ditto
+    spec:
+      containers:
+      - name: ditto
+        image: garritfra/ditto:latest
+        ports:
+        - containerPort: 42000
