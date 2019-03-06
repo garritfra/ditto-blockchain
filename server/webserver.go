@@ -57,16 +57,23 @@ func registerRouteHandlers() {
 	http.HandleFunc("/add_peers", handleAddPeers)
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func handleError(err error, w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	w.Write([]byte("Error: " + err.Error()))
 	log.Print(err.Error())
 }
 
 func handleListBlocks(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	json.NewEncoder(w).Encode(blockchain.AsJSON())
 }
 
 func handleAddTransaction(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	decoder := json.NewDecoder(r.Body)
 	var receivedTransaction core.Transaction
 	err := decoder.Decode(&receivedTransaction)
@@ -80,21 +87,25 @@ func handleAddTransaction(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleMineBlock(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	block := blockchain.MineBlock()
 	json.NewEncoder(w).Encode(block)
 }
 
 func handleListPendingTransactions(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	json.NewEncoder(w).Encode(blockchain.PendingTransactions)
 }
 
 func handleIsValid(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	valid := blockchain.IsValid()
 	json.NewEncoder(w).Encode(valid)
 }
 
 // Takes an a string-slice, and adds it to the known peers
 func handleAddPeers(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	decoder := json.NewDecoder(r.Body)
 	var receivedPeers []string
 	err := decoder.Decode(&receivedPeers)
@@ -114,5 +125,6 @@ func handleAddPeers(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleUpdate(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	json.NewEncoder(w).Encode(blockchain.Update())
 }
