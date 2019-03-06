@@ -1,8 +1,16 @@
-FROM node
+FROM node:10-alpine
+
+RUN mkdir app
+
+COPY . /app
+
+WORKDIR /app
 
 RUN npm install \
     && npm run build
 
-EXPOSE 80
+EXPOSE 8080
 
-CMD [ "npm", "start" ]
+FROM nginx:stable-alpine
+
+COPY dist /usr/share/nginx/html
