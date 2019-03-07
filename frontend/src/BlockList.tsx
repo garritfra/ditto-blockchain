@@ -4,7 +4,8 @@ import axios from "axios";
 export default function BlockList() {
   let [blocks, setBlocks] = useState([]);
 
-  let backendUrl: string = process.env.BACKEND_ADDRESS!;
+  let backendUrl: string =
+    process.env.BACKEND_ADDRESS || "http://localhost:42000/";
 
   if (backendUrl === undefined) {
     throw Error("backend address not specified in ENV variable");
