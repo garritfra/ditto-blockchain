@@ -7,7 +7,7 @@ export default function BlockList() {
   let backendUrl = process.env.BACKEND_ADDRESS!;
 
   if (backendUrl === undefined) {
-    throw Error("backend address not specified in ENV variable");
+    console.error("backend address not specified in ENV variable");
   }
 
   const blocksComponent = blocks.map(block => {
