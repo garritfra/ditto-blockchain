@@ -1,5 +1,7 @@
 FROM node:10-alpine
 
+ENV BACKEND_ADDRESS $BACKEND_ADDRESS
+
 RUN mkdir app
 
 COPY . /app
