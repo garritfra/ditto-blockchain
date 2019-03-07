@@ -4,10 +4,13 @@ import axios from "axios";
 export default function BlockList() {
   let [blocks, setBlocks] = useState([]);
 
-  let backendUrl = process.env.BACKEND_ADDRESS!;
+  const backendUrl = process.env.BACKEND_ADDRESS!;
 
   if (backendUrl === undefined) {
-    console.error("backend address not specified in ENV variable");
+    console.error(
+      "backend address missing or wrong in ENV variable: ",
+      backendUrl
+    );
   }
 
   const blocksComponent = blocks.map(block => {
