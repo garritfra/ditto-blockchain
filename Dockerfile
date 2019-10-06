@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:alpine as builder
 
 # Set go bin which doesn't appear to be set already.
 ENV GOPATH /go
@@ -12,6 +12,10 @@ WORKDIR /go/src/${REPO_PATH}
 
 # Build my app
 RUN go install && go build
+
+
+FROM alpine:latest
+COPY --from=builder /go/bin/blockchain-project /usr/local/bin
 EXPOSE 42000
-CMD ["/go/bin/blockchain-project"]
+CMD ["blockchain-project"]
 
